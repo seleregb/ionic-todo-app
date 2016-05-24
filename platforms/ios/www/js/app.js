@@ -1,0 +1,85 @@
+// Ionic Starter App
+
+// angular.module is a global place for creating, registering and retrieving Angular modules
+// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// the 2nd parameter is an array of 'requires'
+var app = angular.module('todo-app', ['ionic', 'LocalStorageModule']);
+
+app.run(function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
+    if(window.cordova && window.cordova.plugins.Keyboard) {
+      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+      // for form inputs)
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+
+      // Don't remove this line unless you know what you are doing. It stops the viewport
+      // from snapping when text inputs are focused. Ionic handles this internally for
+      // a much nicer keyboard experience.
+      cordova.plugins.Keyboard.disableScroll(true);
+    }
+    if(window.StatusBar) {
+      StatusBar.styleDefault();
+    }
+  });
+
+});
+
+app.config(function(LocalStorageServiceProvider){
+  LocalStorageServiceProvider
+    .setPrefix('todo-app');
+});
+
+app.controller('main', function($scope, $ionicModal, LocalStorageService){
+
+  // store entities in a variable called tasks
+
+  //initialize the tasks scope with empty array
+  $scope.tasks = [];
+
+  // initialize the tasks scope with empty object
+  $scope.task = {};
+
+  // configure the ionic modal before use
+  $ionicModal.fromTemplateUrl('new-task-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function (modal){
+    $scope.newTaskModal = modal;
+  });
+
+  $scope.getTasks = function(){
+    // fetches from local storage
+    if(LocalStorageService.get(taskData)){
+      $scope.tasks = LocalStorageService.get(taskData);
+    } else {
+      $scope.tasks = [];
+    }
+  }
+
+  $scope.createTask = function(){
+    // creates a new task
+    $scope.tasks.push($scope.task);
+    LocalStorageService.set(taskData, $scope.tasks);
+    $scope.task = {};
+    // close new task modal
+    $scope.newTaskModal.hide();
+  }
+
+  $scope.removeTask = function(){
+    // removes a task
+    $scope.tasks.splice(index, 1);
+    LocalStorageService.set(taskData, $scope.tasks);
+  }
+
+  $scope.completeTask = function(){
+    // updates a task as completed
+    $scope.completeTask = function(index){
+      if(index !== -1){
+        $scope.tasks[index].completed = true;
+      }
+
+      LocalStorageService.set(taskData, $scope.tasks);
+    }
+  }
+});
+
