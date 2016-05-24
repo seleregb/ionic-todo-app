@@ -32,7 +32,7 @@ app.config(function(localStorageServiceProvider){
 app.controller('main', function($scope, $ionicModal, localStorageService){
 
   // store entities in a variable called tasks
-  var  taskData = 'task';
+  var taskData = 'task';
 
   //initialize the tasks scope with empty array
   $scope.tasks = [];
@@ -82,7 +82,7 @@ app.controller('main', function($scope, $ionicModal, localStorageService){
   };
 
   $scope.openTaskModal = function () {
-    $scope.newTaskModal.hide();
+    $scope.newTaskModal.show();
   };
 
   $scope.closeTaskModal = function () {
