@@ -1,0 +1,5 @@
+{
+  "search": "https://bower.herokuapp.com",
+  "directory": "www/lib",
+  "strict-ssl": false
+}
